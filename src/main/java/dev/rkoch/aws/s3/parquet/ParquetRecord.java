@@ -2,11 +2,14 @@ package dev.rkoch.aws.s3.parquet;
 
 import org.apache.parquet.schema.MessageType;
 import blue.strategic.parquet.Dehydrator;
+import blue.strategic.parquet.Hydrator;
 
 public interface ParquetRecord {
 
-  MessageType getSchema();
+  Dehydrator<? extends ParquetRecord> getDehydrator();
 
-  Dehydrator<ParquetRecord> getDehydrator();
+  Hydrator<? extends ParquetRecord, ? extends ParquetRecord> getHydrator();
+
+  MessageType getSchema();
 
 }
