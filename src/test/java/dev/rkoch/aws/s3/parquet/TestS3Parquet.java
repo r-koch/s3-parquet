@@ -14,9 +14,9 @@ public class TestS3Parquet {
 
     S3Parquet s3Parquet = new S3Parquet();
 
-    s3Parquet.write("dev-rkoch-spre-test", "test.parquet", writeRecords, new TestParquetRecord().getDehydrator());
+    s3Parquet.write("dev-rkoch-spre-test", "test.parquet", writeRecords);
 
-    List<TestParquetRecord> readRecords = s3Parquet.read("dev-rkoch-spre-test", "test.parquet", new TestParquetRecord().getHydrator());
+    List<TestParquetRecord> readRecords = s3Parquet.read("dev-rkoch-spre-test", "test.parquet", TestParquetRecord.class);
 
     Assertions.assertIterableEquals(writeRecords, readRecords);
   }

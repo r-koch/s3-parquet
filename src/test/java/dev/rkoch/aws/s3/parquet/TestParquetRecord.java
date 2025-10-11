@@ -9,7 +9,7 @@ import org.apache.parquet.schema.Types;
 import blue.strategic.parquet.Dehydrator;
 import blue.strategic.parquet.Hydrator;
 
-public class TestParquetRecord implements ParquetRecord {
+public class TestParquetRecord implements ParquetRecord<TestParquetRecord> {
 
   private static final String LOCAL_DATE = "localDateValue";
   private static final String STRING = "stringValue";

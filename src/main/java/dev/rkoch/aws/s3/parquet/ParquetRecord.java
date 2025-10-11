@@ -4,11 +4,11 @@ import org.apache.parquet.schema.MessageType;
 import blue.strategic.parquet.Dehydrator;
 import blue.strategic.parquet.Hydrator;
 
-public interface ParquetRecord {
+public interface ParquetRecord<T extends ParquetRecord<T>> {
 
-  Dehydrator<? extends ParquetRecord> getDehydrator();
+  Dehydrator<T> getDehydrator();
 
-  Hydrator<? extends ParquetRecord, ? extends ParquetRecord> getHydrator();
+  Hydrator<T, T> getHydrator();
 
   MessageType getSchema();
 
