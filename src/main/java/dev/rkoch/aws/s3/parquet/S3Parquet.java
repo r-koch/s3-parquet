@@ -42,19 +42,21 @@ public class S3Parquet {
   }
 
   public <T extends ParquetRecord<T>> void write(final String bucket, final String key, final List<T> records) throws Exception {
-    Path tempFile = Files.createTempFile(null, null);
-    T first = records.getFirst();
-    /**
-     * https://github.com/strategicblue/parquet-floor/blob/master/src/test/java/blue/strategic/parquet/ParquetReadWriteTest.java
-     */
-    MessageType schema = first.getSchema();
-    Dehydrator<T> dehydrator = first.getDehydrator();
-    try (ParquetWriter<T> writer = ParquetWriter.writeFile(schema, tempFile.toFile(), dehydrator)) {
-      for (T record : records) {
-        writer.write(record);
+    if (!records.isEmpty()) {
+      Path tempFile = Files.createTempFile(null, null);
+      T first = records.getFirst();
+      /**
+       * https://github.com/strategicblue/parquet-floor/blob/master/src/test/java/blue/strategic/parquet/ParquetReadWriteTest.java
+       */
+      MessageType schema = first.getSchema();
+      Dehydrator<T> dehydrator = first.getDehydrator();
+      try (ParquetWriter<T> writer = ParquetWriter.writeFile(schema, tempFile.toFile(), dehydrator)) {
+        for (T record : records) {
+          writer.write(record);
+        }
       }
+      s3Client.putObject(PutObjectRequest.builder().bucket(bucket).key(key).build(), RequestBody.fromFile(tempFile));
     }
-    s3Client.putObject(PutObjectRequest.builder().bucket(bucket).key(key).build(), RequestBody.fromFile(tempFile));
   }
 
 }
